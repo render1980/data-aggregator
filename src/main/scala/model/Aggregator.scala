@@ -1,9 +1,8 @@
 package model
 
-import java.io.File
+import java.io.{File}
 import akka.actor.Actor
 import akka.event.Logging
-import com.github.nscala_time.time.Imports.{DateTime}
 import com.typesafe.config.ConfigFactory
 import dto._
 import FileUtils._
@@ -16,27 +15,43 @@ trait AggregatorModel {
     val f: File = new File(conf.getString("base-dir"))
     Topics(
       f .listFiles
-        .filter(f => !isChildDirEmpty(f, "history")).map(f => f.getName).toList)
+        .filter(f => !isChildDirEmpty(f, conf.getString("history-dir")))
+        .map(f => f.getName)
+        .toList)
+  }
+
+  def getLastTs(f: File): String = {
+    getChildDirs(f) map(ts => dtFromIso8601(ts)) maxBy(t => t.getMillis) toString
   }
 
   def getLastTimestamp(topic: String) = {
     val conf = ConfigFactory.load()
-    val f: File = new File(conf.getString("base-dir") + "/" + topic + "/history")
-    val res: DateTime = getChildDirs(f) map(ts => dtFromIso8601(ts)) maxBy(t => t.getMillis)
-    RunTimestamp(res.toString)
+    RunTimestamp(
+      getLastTs(
+        new File(conf.getString("base-dir") + "/"
+          + topic + "/" + conf.getString("history-dir"))))
   }
 
   def getLastStartStat(topic: String) = {
-    val conf = ConfigFactory.load()
-    // fake
-    TimestampStat(10000, 5000, 1000, 2000)
+    val rows = getOffsetsFileRows(topic)
+    val amounts = rows map(m => m.values.head.toInt)
+    val sum = amounts.sum
+    TimestampStat(sum, amounts.max, amounts.min, sum / amounts.size)
   }
 
   def getPartitionsInfo(topic: String, timestamp: String) = {
+    val rows = getOffsetsFileRows(topic)
+    PartsInfo(rows reduce(_ ++ _))
+  }
+
+  def getOffsetsFileRows(topic: String): List[Map[String, String]] = {
     val conf = ConfigFactory.load()
-    // fake
-    PartsInfo(Map(1 -> 5000, 2 -> 1000, 3 -> 1000,
-      4 -> 1000, 5 -> 1000, 6 -> 1000))
+    val f = new File(conf.getString("base-dir") + "/" + topic
+      + "/" + conf.getString("history-dir"))
+    val lastTs = getLastTs(f)
+    val fOffsets = new File(f.getAbsolutePath + "/" + lastTs + "/"
+      + conf.getString("csv-file"))
+    readCsvFile(fOffsets, conf.getBoolean("csv-header"))
   }
 }
 

@@ -18,7 +18,8 @@ libraryDependencies ++= {
     "org.specs2"          %%  "specs2-core"   % "2.3.11" % "test",
     "io.spray"            %%  "spray-json"    % "1.3.2",
     "org.json4s"          %%  "json4s-native" % "3.2.11",
-    "com.github.nscala-time" %% "nscala-time" % "2.6.0"
+    "com.github.nscala-time" %% "nscala-time" % "2.6.0",
+    "net.sf.opencsv" % "opencsv" % "2.3"
   )
 }
 

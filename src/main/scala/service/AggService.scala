@@ -27,10 +27,18 @@ trait AggService extends HttpService with Json4sSupport {
         respondWithMediaType(`text/html`) {
           complete(
             """<html>
-              |<h1>Hellow!</h1>
-              |<p>Here you can watching some metrics about procedures</p>
-              |<p><h3>Use:</h3></p>
-              |</html>""".stripMargin)
+              <body>
+              <h1>Hellow!</h1><p>Here you can watching some metrics about procedures</p>
+              <p><h3>Use:</h3></p>
+              <ul>
+              <li>/topics - show all not empty topics</li>
+              <li>/ts?topic=[topic_name] - show last start timestamp by topic</li>
+              <li>/stat?topic=[topic_name] - show last start statistics by topics</li>
+              <li>/parts-info?topic=[topic_name]&amp;timestamp=[timestamp] - show partitions list with messages
+              amount by each part for topic and timestamp</li>
+              </ul>
+              </body>
+              </html>""".stripMargin.replaceAll("[\n\r]",""))
         }
       }
     } ~ path("topics") {

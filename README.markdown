@@ -22,6 +22,12 @@ topic_name[1]            .. topic_name[M]
 * N - amount of all timestamps for topic[1]
 * K - amount of all timestamps for topic[M]
 
+Topic_name may be any
+
+### run_timestamp dir format
+
+Example: 2015-12-04T13:00:00.000Z
+
 ## Run
 
 ### With sbt
@@ -36,28 +42,63 @@ sbt re-start
 java -Dbase_dir=/var/tmp/agg_spool -jar target/scala-2.11/data-aggregator_2.11-0.1-one-jar.jar
 ```
 
-## Testing
+-Dbase_dir arg value must exclude slash at the end of file path!
+
+## HTTP API Testing
+
+### Response headers
+
+Server: spray-can/1.3.3
+
+Date: [date]
+
+Content-Type: application/json; charset=UTF-8
+
+Content-Length: [content_length]
 
 ### Show all not empty topics
 
+#### Request
 ```
 curl http://127.0.0.1:8080/topics
 ```
 
+#### Response
+```
+["topic1","topic2"]
+```
+
 ### Show when procedire wa started (in timestamp format) by topic
 
+#### Request
 ```
 curl http://127.0.0.1:8080/ts?topic=[topic_name]
+```
+#### Response
+```
+"2015-12-04T12:00:00.000Z"
 ```
 
 ### Show last execution statistics by topic
 
+#### Request
 ```
 curl http://127.0.0.1:8080/stat?topic=[topic_name]
 ```
 
+#### Response
+```
+{"sum":2700,"max":1200,"min":100,"avg":675.0}
+```
+
 ### Show partitions info by topic & timestamp
 
+#### Request
 ```
 curl http://127.0.0.1:8080/parts-info?topic=[topic_name]&timestamp=[required_timestamp]
+```
+
+#### Response
+```
+{"1":"100","2":"1000","3":"400","4":"1200"}
 ```

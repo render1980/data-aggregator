@@ -1,6 +1,8 @@
 package model
 
-import java.io.File
+import au.com.bytecode.opencsv.CSVReader
+import scala.collection.JavaConversions._
+import java.io.{FileReader, File}
 
 object FileUtils {
 
@@ -12,5 +14,17 @@ object FileUtils {
   def getChildDirs(f: File): List[String] = {
     assert(f.isDirectory)
     f.listFiles map(f => f.getName) toList
+  }
+
+  def readCsvFile(f: File, header: Boolean): List[Map[String, String]] = {
+    val reader: CSVReader = new CSVReader(new FileReader(f))
+    if (header)
+      reader.readNext()
+    val rows = for (row <- reader.readAll()) yield {
+      Map(row(0) -> row(1))
+    }
+    val resList = rows.toList
+    reader.close
+    resList
   }
 }
