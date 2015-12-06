@@ -4,18 +4,13 @@ import java.io.File
 
 object FileUtils {
 
-  def getNotEmptyTopics(f: File, topic: String): String = {
-    val fHist: File = new File(f.getAbsolutePath + "/" + "history")
-    val histFiles = fHist.listFiles()
-    println(fHist.getAbsolutePath)
-    if (histFiles.size > 0)
-      topic
-    null
+  def isEmpty(f: File, topic: String): Boolean = {
+    new File(f.getAbsolutePath + "/" + "history").listFiles().size < 1
   }
 
   def getTopicsNames(baseDir: String): List[String] = {
     new File(baseDir)
       .listFiles()
-      .map(f => getNotEmptyTopics(f, f.getName)).toList
+      .filter(f => !isEmpty(f, f.getName)).map(f => f.getName).toList
   }
 }
