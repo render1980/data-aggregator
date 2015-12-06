@@ -19,7 +19,7 @@ trait AggRequest extends Actor with Json4sSupport {
   def message: RequestMessage
 
   import context._
-  setReceiveTimeout(1.seconds)
+  setReceiveTimeout(5.seconds)
   target ! message
 
   def receive = {

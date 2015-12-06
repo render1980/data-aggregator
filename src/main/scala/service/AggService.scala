@@ -42,7 +42,9 @@ trait AggService extends HttpService with Json4sSupport {
     } ~ path("ts") {
       get {
         parameters('topic.as[String]) { topic =>
-          handleRequest(GetTimestamp(topic))
+          handleRequest {
+            GetTimestamp(topic)
+          }
         }
       }
     } ~ path("stat") {

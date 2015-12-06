@@ -1,6 +1,6 @@
 package dto
 
-import java.sql.Timestamp
+import org.joda.time.DateTime
 
 sealed trait RequestMessage
 sealed trait ResultMessage
@@ -11,7 +11,7 @@ case class GetStat(topic: String) extends RequestMessage
 case class GetPartsInfo(topic: String, timestamp: String) extends RequestMessage
 // Results
 case class Topics(topics: List[String]) extends ResultMessage
-case class RunTimestamp(timestamp: Timestamp) extends ResultMessage
+case class RunTimestamp(timestamp: String) extends ResultMessage
 case class TimestampStat(sum: Long, max: Long, min: Long, avg: Float) extends ResultMessage
 case class PartsInfo(info: Map[Int, Long]) extends ResultMessage
 
