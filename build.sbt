@@ -22,3 +22,7 @@ libraryDependencies ++= {
 }
 
 Revolver.settings
+
+import com.github.retronym.SbtOneJar._
+
+oneJarSettings

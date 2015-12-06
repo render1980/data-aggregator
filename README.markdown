@@ -24,4 +24,40 @@ topic_name[1]            .. topic_name[M]
 
 ## Run
 
-sbt clean compile package && java -jar ./targer/scala-2.11/data-aggregator_2.11-0.1.jar -Dbase_dir=[base_dir]
+### With sbt
+
+```
+sbt re-start
+```
+
+### With one-jar
+
+```
+java -Dbase_dir=/var/tmp/agg_spool -jar target/scala-2.11/data-aggregator_2.11-0.1-one-jar.jar
+```
+
+## Testing
+
+### Show all not empty topics
+
+```
+curl http://127.0.0.1:8080/topics
+```
+
+### Show when procedire wa started (in timestamp format) by topic
+
+```
+curl http://127.0.0.1:8080/ts?topic=[topic_name]
+```
+
+### Show last execution statistics by topic
+
+```
+curl http://127.0.0.1:8080/stat?topic=[topic_name]
+```
+
+### Show partitions info by topic & timestamp
+
+```
+curl http://127.0.0.1:8080/parts-info?topic=[topic_name]&timestamp=[required_timestamp]
+```
