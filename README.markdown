@@ -56,7 +56,7 @@ sbt re-start
 ### With one-jar
 
 ```
-java -Dbase_dir=/var/tmp/agg_spool -jar target/scala-2.11/data-aggregator_2.11-0.1-one-jar.jar
+sbt one-jar && java -Dbase_dir=/var/tmp/agg_spool -jar target/scala-2.11/data-aggregator_2.11-0.1-one-jar.jar
 ```
 
 -Dbase_dir arg value must exclude slash at the end of file path!
@@ -64,7 +64,7 @@ java -Dbase_dir=/var/tmp/agg_spool -jar target/scala-2.11/data-aggregator_2.11-0
 ### Or simply with start script
 
 ```
-cd project_dir && ./start.sh
+./start.sh
 ```
 
 ## HTTP API Testing
@@ -91,7 +91,7 @@ curl http://127.0.0.1:8080/topics
 ["topic1","topic2"]
 ```
 
-### Show when procedire wa started (in timestamp format) by topic
+### Show procedure start last time (in timestamp format) by topic
 
 #### Request
 ```
@@ -114,7 +114,7 @@ curl http://127.0.0.1:8080/stat?topic=[topic_name]
 {"sum":2700,"max":1200,"min":100,"avg":675.0}
 ```
 
-### Show partitions info by topic & timestamp
+### Show partitions info by topic&timestamp
 
 #### Request
 ```
