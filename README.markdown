@@ -28,6 +28,23 @@ Topic_name may be any
 
 Example: 2015-12-04T13:00:00.000Z
 
+## Preconditions
+
+Desribed early files hierarchy must be exists at some file path. By default base_dir parameter equal /var/tmp/agg_spool.
+
+## Preinstalled soft requirements
+
+* java (>= 1.7)
+* sbt (>= 0.11)
+
+Both must be available at $PATH variable
+
+## Compile
+
+```
+sbt one-jar
+```
+
 ## Run
 
 ### With sbt
@@ -43,6 +60,12 @@ java -Dbase_dir=/var/tmp/agg_spool -jar target/scala-2.11/data-aggregator_2.11-0
 ```
 
 -Dbase_dir arg value must exclude slash at the end of file path!
+
+### Or simply with start script
+
+```
+cd project_dir && ./start.sh
+```
 
 ## HTTP API Testing
 
@@ -102,3 +125,6 @@ curl http://127.0.0.1:8080/parts-info?topic=[topic_name]&timestamp=[required_tim
 ```
 {"1":"100","2":"1000","3":"400","4":"1200"}
 ```
+
+
+
