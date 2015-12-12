@@ -28,6 +28,19 @@ Topic_name may be any
 
 Example: 2015-12-04T13:00:00.000Z
 
+### offsets.csv format
+<pre>
+[partition_id],[messages_amount]
+part_id[1],messages_amount[1]
+...
+part_id[N],messages_amount[N]
+</pre>
+
+* partition_id - name of partition (or any other storage block)
+* messages_amount - amount of messages for some partition (or any other storage block)
+
+Names of columns may be any.
+
 ## Preconditions
 
 Desribed early files hierarchy must be exists at some file path. By default base_dir parameter equal /var/tmp/agg_spool.
