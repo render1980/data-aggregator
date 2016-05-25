@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -e
 
 BASE_DIR=$1
 BASE_DIR_DEFAULT=/var/tmp/agg_spool
